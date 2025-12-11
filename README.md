@@ -1,8 +1,8 @@
-# 🛠️ API REST - Task Manager (Gestión de Tareas)
+#  API REST - Task Manager (Gestión de Tareas)
 
 Este proyecto consiste en el desarrollo de una **API RESTful** utilizando **Node.js** y **Express**, diseñada bajo el patrón de arquitectura **MVC (Modelo-Vista-Controlador)**. El sistema permite la administración completa de tareas (To-Do List) mediante operaciones CRUD, gestionando la persistencia de datos en memoria y validando el flujo de información entre el cliente y el servidor.
 
-## 📋 Objetivos del Proyecto
+##  Objetivos del Proyecto
 
 * **Arquitectura Modular:** Separación clara de responsabilidades:
     * **Modelo:** Definición de datos y lógica de almacenamiento.
