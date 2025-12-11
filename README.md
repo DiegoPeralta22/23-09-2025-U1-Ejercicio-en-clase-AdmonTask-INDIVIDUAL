@@ -1,9 +1,36 @@
-En este proyecto desarrollé una API REST sencilla con Node.js y Express, siguiendo la idea de separar el código en modelo, controlador y rutas. El objetivo era poder gestionar tareas con operaciones básicas como listar, crear, eliminar y actualizar, y poco a poco ir resolviendo los problemas que iban apareciendo en el camino.
+# 🛠️ API REST - Task Manager (Gestión de Tareas)
 
-Lo primero fue definir el modelo. Aquí utilicé un arreglo en memoria para simular la base de datos y cada tarea se genera con un id único usando randomUUID. El modelo expone funciones como findAll para listar todo, addTask para crear, findId para buscar por id, removeTask para borrar y updateTask para cambiar el título. Al inicio findId solo devolvía true o false, y eso hacía que el endpoint no regresara nada; lo corregí para que devuelva la tarea completa o null si no existe. También corregí inconsistencias de nombres entre el modelo y el controlador (tenía addTask en un lado y create en otro), lo que al principio me provocaba errores.
+Este proyecto consiste en el desarrollo de una **API RESTful** utilizando **Node.js** y **Express**, diseñada bajo el patrón de arquitectura **MVC (Modelo-Vista-Controlador)**. El sistema permite la administración completa de tareas (To-Do List) mediante operaciones CRUD, gestionando la persistencia de datos en memoria y validando el flujo de información entre el cliente y el servidor.
 
-En el controlador fui resolviendo el manejo de las peticiones. Se validó que el título fuera texto, se agregaron los códigos de estado correctos (200, 201, 204, 404, etc.) y mensajes de error cuando una tarea no se encuentra. Aprendí que no basta con “retornar algo”, hay que decidir qué código HTTP usar y qué JSON enviar como respuesta. Una de las confusiones que tuve fue con el body: descubrí que el body de la petición lo construye el cliente (en mi caso Insomnia) y el body de la respuesta lo construye el servidor según lo que yo programe. Eso me ayudó a entender mejor cómo se comunican ambas partes.
+## 📋 Objetivos del Proyecto
 
-En las rutas conecté todo usando express.Router(). Aquí mapeé cada método HTTP con el controlador correspondiente: GET para listar o buscar por id, POST para crear, DELETE para eliminar y PATCH para actualizaciones. Primero hice el patch solo para actualizar el título, pero después añadí la parte de “completar o descompletar” una tarea. Esto lo resolví de dos maneras: con un endpoint que recibe un booleano (PATCH /:id/completed) y con otro que simplemente invierte el estado actual (PATCH /:id/toggle). De esta forma se puede marcar una tarea como hecha, desmarcarla o alternar su estado con una sola llamada.
+* **Arquitectura Modular:** Separación clara de responsabilidades:
+    * **Modelo:** Definición de datos y lógica de almacenamiento.
+    * **Controlador:** Lógica de negocio y manejo de peticiones/respuestas.
+    * **Rutas:** Definición de endpoints y métodos HTTP.
+* **Gestión de Estado:** Implementación de lógica para marcar tareas como completadas/pendientes.
+* **Manejo de Respuestas HTTP:** Uso correcto de códigos de estado (`200`, `201`, `404`) y respuestas JSON estructuradas.
 
-En resumen, fui construyendo la API paso a paso, corrigiendo errores de lógica, validaciones y consistencia entre las capas del proyecto. El resultado final es una API REST que cumple con las operaciones CRUD básicas y que además permite marcar las tareas como completas o incompletas. Fue un ejercicio útil para entender la arquitectura MVC en Node, el manejo de JSON entre cliente y servidor, y la importancia de los pequeños detalles como validar entradas, nombrar funciones de forma coherente y devolver siempre una respuesta clara.
+##  Endpoints Disponibles
+
+La API expone los siguientes recursos para interactuar con las tareas:
+
+| Método | Endpoint | Descripción |
+| :--- | :--- | :--- |
+| `GET` | `/tasks` | Obtiene la lista completa de tareas (`findAll`). |
+| `GET` | `/tasks/:id` | Busca una tarea por su ID único. Retorna `404` si no existe. |
+| `POST` | `/tasks` | Crea una nueva tarea. Genera ID con `randomUUID`. |
+| `DELETE`| `/tasks/:id` | Elimina una tarea del sistema. |
+| `PATCH` | `/tasks/:id` | Actualiza el título de una tarea existente. |
+| `PATCH` | `/tasks/:id/toggle`| Invierte el estado de la tarea (Pendiente ↔ Completada). |
+
+##  Detalles Técnicos y Soluciones
+
+### Modelo (`Model`)
+Se implementó un arreglo en memoria para simular la base de datos. Se solucionaron problemas de consistencia donde las búsquedas retornaban booleanos, ajustando las funciones `findId` para retornar el objeto completo o `null`, permitiendo al controlador tomar decisiones precisas.
+
+### Controlador (`Controller`)
+Se estandarizó la comunicación servidor-cliente. Se implementaron validaciones para asegurar que los datos de entrada (como el título) sean texto válido y se estructuraron los mensajes de error para ofrecer retroalimentación clara en caso de recursos no encontrados.
+
+### Rutas (`Routes`)
+Se utilizó `express.Router()` para desacoplar las rutas del archivo principal, mejorando la mantenibilidad y organización del código.
